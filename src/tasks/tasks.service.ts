@@ -12,6 +12,10 @@ export class TasksService {
     return this.tasks;
   }
 
+  async getTaskById(id: string): Promise<Task> {
+    return this.tasks.find(task => task.id === id);
+  } 
+
   async createNewTask(createTaskDto: CreateTaskDto): Promise<Task> {
     const { title, description } = createTaskDto;
     
