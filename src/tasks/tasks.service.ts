@@ -14,18 +14,9 @@ export class TasksService {
     private taskRepository: TaskRepository,
   ) {}
 
-  // getTasks({ status, search }: GetTaskFilter): Task[] {
-  //   let tasks = status ? this.tasks.filter(
-  //     (task: Task) => task.status === status) : this.tasks;
-  //     if(search) {
-  //       tasks = tasks.filter(task =>
-  //         task.title.includes(search) ||
-  //         task.description.includes(search)
-  //       )
-  //     }
-
-  //   return tasks;
-  // }
+  async getTasks(filterDto: GetTaskFilter): Promise<Task[]> {
+    return this.taskRepository.getTasks(filterDto);
+  }
 
   async getTaskById(id: number): Promise<Task> {
     const task = await this.taskRepository.findOne(id);
