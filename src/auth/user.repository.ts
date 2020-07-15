@@ -30,4 +30,22 @@ export class UserRepository extends Repository<User> {
   private async hashPassword(password: string, salt: string): Promise<string> {
     return bcrypt.hash(password, salt);
   }
+
+  async validateUserPassword(authCredentialsDto: AuthCredentialsDto): Promise<string> {
+    const { username, password } = authCredentialsDto;
+
+    const user = await this.findOne({ username });
+
+    if (!user) {
+      throw new InternalServerErrorException('Invalid crendentials');
+    }
+
+    const hash = await bcrypt.compare(password, user.password);
+
+    if (!hash) {
+      throw new InternalServerErrorException('Invalid crendentials');
+    }
+    
+    return username;
+  }
 }
