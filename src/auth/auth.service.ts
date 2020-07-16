@@ -22,7 +22,7 @@ export class AuthService {
     const username = await this.userRepository.validateUserPassword(authCredentialsDto);
     
     const payload: JwtPayload = { username };
-    const token = await this.jwtService.sign(payload);
+    const token = this.jwtService.sign(payload);
 
     return { token };
   }
