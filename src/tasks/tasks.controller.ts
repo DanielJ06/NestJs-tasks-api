@@ -7,6 +7,8 @@ import { GetTaskFilter } from './dto/get-tasks-filter.dto';
 import { TaskStatusValidationPipe } from './pipes/task-status-validation.pipe';
 import { Task } from './tasks.entity';
 import { TaskStatus } from './tasks-status.enum';
+import { User } from 'src/auth/user.entity';
+import { GetUser } from 'src/auth/get-user.decorator';
 
 @Controller('tasks')
 @UseGuards(AuthGuard('jwt'))
@@ -25,8 +27,11 @@ export class TasksController {
 
   @Post()
   @UsePipes(ValidationPipe)
-    createNewTask(@Body() createTaskDto: CreateTaskDto): Promise<Task> {
-      return this.tasksServices.createNewTask(createTaskDto);
+    createNewTask(
+      @Body() createTaskDto: CreateTaskDto,
+      @GetUser() user: User,
+    ): Promise<Task> {
+      return this.tasksServices.createNewTask(createTaskDto, user);
     }
 
   @Patch('/:id/status')
